@@ -1,6 +1,6 @@
 import { Component } from "./core";
 import './components/Button/Button';
-import { todoList} from "./servises/todoList";
+import { todoList } from "./servises/todoList/TodoList";
 
 export class App extends Component {
   constructor(){
@@ -24,9 +24,9 @@ export class App extends Component {
     });
 
     window.addEventListener('save-task', () => {
-      this.setState((state) => ({ ...this.state, isLoading: true }));
-      todoList.createTask({ title: this.state.value}).finaly(() => {
-        this.setState((state) => ({ ...state, isLoading: false}));
+      this.setState((state) => ({ ...state, isLoading: true })); 
+      todoList.createTask({ title: this.state.value }).finally(() => {
+        this.setState((state) => ({ ...state, isLoading: false }));
       });
 
     });
@@ -35,11 +35,31 @@ export class App extends Component {
 
   render() {
     return (
-      ` 
-           <div class='container mt-5'>
+      `
+      ${
+        this.state.isLoading &&
+        `
+          <div class="d-flex justify-content-center position-absolute" style='z-index: 1;
+      position: fixed !important;
+      background-color: #000;
+      opacity: .5;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      display: flex !important;
+      align-items: center;'>
+          <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
+      `
+      }
+      
+          <div class='container mt-5'>
       <div class="input-group mb-3">
         <input value="${this.state.value}" type="text" class="form-control" placeholder="Add a new task" aria-label="Recipient's username" aria-describedby="button-addon2">
-        <my-button content="save" classname="btn btn-outline-primary"></my-button>
+        <my-button eventtype="save-task" content="Save" classname="btn btn-outline-primary"></my-button>
       </div>
       <ul class="list-group">
         <li class="list-group-item">

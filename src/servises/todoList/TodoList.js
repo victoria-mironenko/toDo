@@ -1,6 +1,6 @@
-import { Database} from "../database/Database";
+import { Database } from "../database/Database";
 
-export class TodoList {
+class TodoList {
     constructor() {
         this.database = Database.getInstance();
     }

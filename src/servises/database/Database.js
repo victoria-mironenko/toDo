@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { API_KEY } from "../../constants/envValues";
 
 export class Database {
@@ -25,7 +25,7 @@ export class Database {
 
   read(collectionKey) {
     const collectionRef = collection(this._database, collectionKey);
-    return getDoc(collectionRef).then((documents) => {
+    return getDocs(collectionRef).then((documents) => {
       return documents.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     });
   }
