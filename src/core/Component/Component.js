@@ -1,35 +1,26 @@
 export class Component extends HTMLElement {
   constructor() {
     super();
-    this.state = {};
     this.props = {};
+    this.state = {};
   }
 
   setState(callback) {
     this.state = callback(this.state);
-    this.innerHTML = this.render()
-      .toString()
-      .replaceAll(",", "")
-      .trim()
-      .replaceAll(/true|false/gi, "");
+    this.innerHTML = this.render();
   }
 
   connectedCallback() {
-    this.innerHTML = this.render()
-      .toString()
-      .replaceAll(",", "")
-      .trim()
-      .replaceAll(/true|false/gi, "");
+    this.innerHTML = this.render();
     this.componentDidMount();
-    this.registerEvents();
   }
 
   disconnectedCallback() {
     this.componentWillUnmount();
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.componentWillUpdate(name, oldValue, newValue);
+  attributeChangedCallback(name, pldValue, newValue) {
+    this.componentWillUpdate(name, pldValue, newValue);
     this.getAttributeNames().forEach((name) => {
       this.props[name] = this.getAttribute(name);
     });
@@ -39,10 +30,8 @@ export class Component extends HTMLElement {
     this.dispatchEvent(new CustomEvent(type, { bubbles: true, detail: props }));
   }
 
-  registerEvents() {}
+  render() {}
   componentDidMount() {}
   componentWillUnmount() {}
   componentWillUpdate() {}
-  componentWillUnmount() {}
-  render() {}
 }
