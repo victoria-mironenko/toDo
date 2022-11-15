@@ -1,9 +1,9 @@
-import { Component } from "../../core";
+import { Component } from "../../../core";
 
 
 export class Button extends Component {
 
-    registerEvents() {
+    componentDidMount() {
         this.addEventListener('click', () => {
             this.dispatch(this.props.eventtype);
         });
@@ -16,7 +16,9 @@ export class Button extends Component {
     render() {
         const { content, classname } = this.props;
         return `
+        
         <button type="button" class="btn ${classname}">${content}</button>
+
         `
     }
 
