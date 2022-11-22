@@ -19,8 +19,8 @@ export class Component extends HTMLElement {
     this.componentWillUnmount();
   }
 
-  attributeChangedCallback(name, pldValue, newValue) {
-    this.componentWillUpdate(name, pldValue, newValue);
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.componentWillUpdate(name, oldValue, newValue);
     this.getAttributeNames().forEach((name) => {
       this.props[name] = this.getAttribute(name);
     });
