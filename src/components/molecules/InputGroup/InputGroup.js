@@ -1,69 +1,42 @@
 import { Component } from "../../../core";
-import { todoList } from '../../../servises/todoList/TodoList'
-import '../../atoms/Button/Button';
-import '../../atoms/Input/Input';
 
 export class InputGroup extends Component {
+  onSubmit = (evt) => {
+    evt.preventDefault();
+    const task = {};
+    const data = new FormData(evt.target);
+    data.forEach((value, key) => {
+        task[key] = value;
+    })
 
-    constructor() {
-        super();
-        this.state = {
-            inputValue: '',
-            isLoading: false,
-            error: '',
-        }
-    }
+    this.dispatch(this.props.type, task);
+  };
 
-    onSave() {
-        if(this.state.inputValue) {
-            this.setState((state) => {
-                return {
-                    ...state,
-                    isLoading: true
-                }
-            })
-            todoList.createTask({
-                title: this.state.inputValue,
-                isCompleted: false
-            }).then(() => {
-                
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-            .finally(() => {
-                this.setState((state) => {
-                    return {
-                        ...state,
-                        isLoading: false
-                    }
-                })
-            })
-        }
-    }
+  componentDidMount() {
+    this.addEventListener("submit", this.onSubmit);
+  }
 
-    onInput(evt) {
-        this.setState((state) => {
-            return {
-                ...state,
-                inputValue: evt.detail.value
-            }
-        })
-    }
+  componentWillUnmount() {
+    this.removeEventListener("submit", this.onSubmit);
+  }
 
-    componentDidMount() {
-        this.addEventListener('save-task', this.onSave);
-        this.addEventListener('custom-input', this.onInput)
-    }
+  static get observedAttributes() {
+    return ['type']
+  }
 
-    render() {
-        return `
-        <div class="input-group mb-3">
-          <my-input value="${this.state.inputValue}" placeholder="Add a new task" type="text"></my-input>
-          <my-button eventtype='save-task' content="Save" classname="btn btn-outline-primary"></my-button>
-        </div>
-        `
-    }
+  render() {
+    return `
+        <form class="input-group mb-3">
+            <input 
+                name="title"
+                type="text" 
+                class="form-control" 
+                placeholder="Add a new task"
+            />
+            <button type="submit" class="btn btn-outline-primary">Save</button>
+        </form>
+        `;
+  }
 }
 
-customElements.define('my-input-group', InputGroup)
+customElements.define("my-input-group", InputGroup);
