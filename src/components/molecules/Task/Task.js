@@ -12,17 +12,28 @@ export class Task extends Component {
         return ['title', 'id', 'iscompleted']
     }
 
+    toggleEditting = () => {
+        this.setState((state) => {
+            return {
+                ...state,
+                isEditting: !state.isEditting,
+            };
+        })
+    }
+
+
     onClick = (evt) => {
         const target = evt.target;
         if(target.closest('.edit-action')) {
-            this.setState((state) => {
-                return {
-                    ...state,
-                    isEditting: true,
-                }
-            })
+            this.toggleEditting();
         }
+        if(target.closest('.cancel')) {
+            this.toggleEditting();
+        }
+        
     }
+
+   
 
     componentDidMount() {
         this.addEventListener('click', this.onClick)
@@ -37,7 +48,13 @@ export class Task extends Component {
         <li class="list-group-item">
                 <div class="form-check d-flex justify-content-between align-items-center">
                 ${this.state.isEditting
-                ? `<my-input-group></my-input-group>`
+                ? `<my-input-group 
+                    type="edit-task" 
+                    isshowcancelbutton="true"
+                    taskid="${this.props.id}" 
+                    value="${this.props.title}"
+                >
+                </my-input-group>`
             : `
                   <div>
                       <input 
